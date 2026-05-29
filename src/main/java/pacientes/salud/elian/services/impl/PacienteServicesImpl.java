@@ -3,7 +3,9 @@ package pacientes.salud.elian.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
 import pacientes.salud.elian.dto.PacienteDTO;
@@ -20,7 +22,16 @@ public class PacienteServicesImpl implements PacienteService {
 
     @Override
     public PacienteDTO createPaciente(PacienteDTO pacienteDto) {
+        if (pacienteDto.getCurp() == null || pacienteDto.getCurp().length() != 18) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La CURP debe tener 18 caracteres");
+        }
+
+        if (pacienteRepository.existsByCurp(pacienteDto.getCurp())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "La CURP ya existe");
+        }
+
         Paciente paciente = PacienteMapper.mapToPaciente(pacienteDto);
+        paciente.setActivo(true);
         Paciente savedPaciente = pacienteRepository.save(paciente);
         return PacienteMapper.mapToPacienteDTO(savedPaciente);
     }
@@ -32,8 +43,14 @@ public class PacienteServicesImpl implements PacienteService {
     }
 
     @Override
-    public List<PacienteDTO> getAllPacientes() {
-        List<Paciente> pacientes = pacienteRepository.findAll();
+    public PacienteDTO getPacienteByCurp(String curp) {
+        Paciente paciente = pacienteRepository.findByCurp(curp).orElse(null);
+        return paciente == null ? null : PacienteMapper.mapToPacienteDTO(paciente);
+    }
+
+    @Override
+    public List<PacienteDTO> getPacientesActivos() {
+        List<Paciente> pacientes = pacienteRepository.findByActivoTrue();
         return pacientes.stream()
                 .map(PacienteMapper::mapToPacienteDTO)
                 .collect(Collectors.toList());
@@ -48,24 +65,23 @@ public class PacienteServicesImpl implements PacienteService {
         }
 
         paciente.setNombre(updatePaciente.getNombre());
-        paciente.setApellido(updatePaciente.getApellido());
-        paciente.setEdad(updatePaciente.getEdad());
+        paciente.setApellidos(updatePaciente.getApellidos());
+        paciente.setFechaNacimiento(updatePaciente.getFechaNacimiento());
+        paciente.setTipoSangre(updatePaciente.getTipoSangre());
         paciente.setTelefono(updatePaciente.getTelefono());
-        paciente.setCorreo(updatePaciente.getCorreo());
-        paciente.setDireccion(updatePaciente.getDireccion());
+        paciente.setEmail(updatePaciente.getEmail());
 
         Paciente updatedPaciente = pacienteRepository.save(paciente);
         return PacienteMapper.mapToPacienteDTO(updatedPaciente);
     }
 
     @Override
-    public void deletePaciente(Long pacienteId) {
-        pacienteRepository.deleteById(pacienteId);
-    }
-
-    @Override
-    public PacienteDTO getPacienteByCorreo(String correo) {
-        Paciente paciente = pacienteRepository.findByCorreo(correo).orElse(null);
-        return paciente == null ? null : PacienteMapper.mapToPacienteDTO(paciente);
+    public void darDeBajaPaciente(Long pacienteId) {
+        Paciente paciente = pacienteRepository.findById(pacienteId).orElse(null);
+        if (paciente == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente no encontrado");
+        }
+        paciente.setActivo(false);
+        pacienteRepository.save(paciente);
     }
 }

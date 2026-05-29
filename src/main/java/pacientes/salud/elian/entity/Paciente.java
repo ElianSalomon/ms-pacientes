@@ -1,5 +1,7 @@
 package pacientes.salud.elian.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,18 +29,24 @@ public class Paciente {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "apellido", nullable = false, length = 100)
-    private String apellido;
+    @Column(name = "apellidos", nullable = false, length = 150)
+    private String apellidos;
 
-    @Column(name = "edad")
-    private Integer edad;
+    @Column(name = "curp", nullable = false, unique = true, length = 18)
+    private String curp;
+
+    @Column(name = "fecha_nacimiento", nullable = false)
+    private LocalDate fechaNacimiento;
+
+    @Column(name = "tipo_sangre", nullable = false, length = 5)
+    private String tipoSangre;
 
     @Column(name = "telefono", length = 20)
     private String telefono;
 
-    @Column(name = "correo", length = 100, unique = true)
-    private String correo;
+    @Column(name = "email", length = 100)
+    private String email;
 
-    @Column(name = "direccion", length = 200)
-    private String direccion;
+    @Column(name = "activo", nullable = false)
+    private Boolean activo;
 }

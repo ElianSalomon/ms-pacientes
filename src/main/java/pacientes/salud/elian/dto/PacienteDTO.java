@@ -1,5 +1,7 @@
 package pacientes.salud.elian.dto;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +15,11 @@ public class PacienteDTO {
 
     private Long idPaciente;
     private String nombre;
-    private String apellido;
-    private Integer edad;
+    private String apellidos;
+    private String curp;
+    private LocalDate fechaNacimiento;
+    private String tipoSangre;
     private String telefono;
-    private String correo;
-    private String direccion;
+    private String email;
+    private Boolean activo;
 }

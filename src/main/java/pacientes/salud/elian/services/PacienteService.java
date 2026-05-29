@@ -10,11 +10,11 @@ public interface PacienteService {
 
     PacienteDTO getPacienteById(Long pacienteId);
 
-    List<PacienteDTO> getAllPacientes();
+    PacienteDTO getPacienteByCurp(String curp);
+
+    List<PacienteDTO> getPacientesActivos();
 
     PacienteDTO updatePaciente(Long pacienteId, PacienteDTO updatePaciente);
 
-    void deletePaciente(Long pacienteId);
-
-    PacienteDTO getPacienteByCorreo(String correo);
+    void darDeBajaPaciente(Long pacienteId);
 }

@@ -10,11 +10,13 @@ public class PacienteMapper {
 
         dto.setIdPaciente(paciente.getIdPaciente());
         dto.setNombre(paciente.getNombre());
-        dto.setApellido(paciente.getApellido());
-        dto.setEdad(paciente.getEdad());
+        dto.setApellidos(paciente.getApellidos());
+        dto.setCurp(paciente.getCurp());
+        dto.setFechaNacimiento(paciente.getFechaNacimiento());
+        dto.setTipoSangre(paciente.getTipoSangre());
         dto.setTelefono(paciente.getTelefono());
-        dto.setCorreo(paciente.getCorreo());
-        dto.setDireccion(paciente.getDireccion());
+        dto.setEmail(paciente.getEmail());
+        dto.setActivo(paciente.getActivo());
 
         return dto;
     }
@@ -24,11 +26,13 @@ public class PacienteMapper {
 
         paciente.setIdPaciente(pacienteDTO.getIdPaciente());
         paciente.setNombre(pacienteDTO.getNombre());
-        paciente.setApellido(pacienteDTO.getApellido());
-        paciente.setEdad(pacienteDTO.getEdad());
+        paciente.setApellidos(pacienteDTO.getApellidos());
+        paciente.setCurp(pacienteDTO.getCurp());
+        paciente.setFechaNacimiento(pacienteDTO.getFechaNacimiento());
+        paciente.setTipoSangre(pacienteDTO.getTipoSangre());
         paciente.setTelefono(pacienteDTO.getTelefono());
-        paciente.setCorreo(pacienteDTO.getCorreo());
-        paciente.setDireccion(pacienteDTO.getDireccion());
+        paciente.setEmail(pacienteDTO.getEmail());
+        paciente.setActivo(pacienteDTO.getActivo());
 
         return paciente;
     }

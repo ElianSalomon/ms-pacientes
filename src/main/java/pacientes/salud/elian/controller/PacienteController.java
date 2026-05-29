@@ -41,19 +41,19 @@ public class PacienteController {
         return ResponseEntity.ok(pacienteDto);
     }
 
-    @GetMapping
-    public ResponseEntity<List<PacienteDTO>> getAllPacientes() {
-        List<PacienteDTO> pacientes = pacienteService.getAllPacientes();
-        return ResponseEntity.ok(pacientes);
-    }
-
-    @GetMapping("/correo/{correo}")
-    public ResponseEntity<PacienteDTO> getPacienteByCorreo(@PathVariable("correo") String correo) {
-        PacienteDTO pacienteDto = pacienteService.getPacienteByCorreo(correo);
+    @GetMapping("/buscar/{curp}")
+    public ResponseEntity<PacienteDTO> getPacienteByCurp(@PathVariable("curp") String curp) {
+        PacienteDTO pacienteDto = pacienteService.getPacienteByCurp(curp);
         if (pacienteDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(pacienteDto);
+    }
+
+    @GetMapping("/activos")
+    public ResponseEntity<List<PacienteDTO>> getPacientesActivos() {
+        List<PacienteDTO> pacientes = pacienteService.getPacientesActivos();
+        return ResponseEntity.ok(pacientes);
     }
 
     @PutMapping("{id}")
@@ -68,7 +68,7 @@ public class PacienteController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletePaciente(@PathVariable("id") Long pacienteId) {
-        pacienteService.deletePaciente(pacienteId);
-        return ResponseEntity.ok("Registro eliminado");
+        pacienteService.darDeBajaPaciente(pacienteId);
+        return ResponseEntity.ok("Paciente dado de baja");
     }
 }
